@@ -1,65 +1,62 @@
+// Definitions by: Carlos Ballesteros Velasco <https://github.com/soywiz>
+//                 Leon Yu <https://github.com/leonyu>
+//                 BendingBender <https://github.com/BendingBender>
+//                 Maple Miao <https://github.com/mapleeit>
+
+/// <reference types="node" />
+import * as stream from 'stream';
 import * as http from 'http';
-import * as https from 'https';
-import * as net from 'net';
 
-interface PlainObject {
-  [key: string]: any;
+export = FormData;
+
+// Extracted because @types/node doesn't export interfaces.
+interface ReadableOptions {
+  highWaterMark?: number;
+  encoding?: string;
+  objectMode?: boolean;
+  read?(this: stream.Readable, size: number): void;
+  destroy?(this: stream.Readable, error: Error | null, callback: (error: Error | null) => void): void;
+  autoDestroy?: boolean;
 }
 
-declare class HttpAgent extends http.Agent {
-  constructor(opts?: AgentKeepAlive.HttpOptions);
-  readonly statusChanged: boolean;
-  createConnection(options: net.NetConnectOpts, cb?: Function): net.Socket;
-  createSocket(req: http.IncomingMessage, options: http.RequestOptions, cb: Function): void;
-  getCurrentStatus(): AgentKeepAlive.AgentStatus;
+interface Options extends ReadableOptions {
+  writable?: boolean;
+  readable?: boolean;
+  dataSize?: number;
+  maxDataSize?: number;
+  pauseStreams?: boolean;
 }
 
-interface Constants {
-  CURRENT_ID: Symbol;
-  CREATE_ID: Symbol;
-  INIT_SOCKET: Symbol;
-  CREATE_HTTPS_CONNECTION: Symbol;
-  SOCKET_CREATED_TIME: Symbol;
-  SOCKET_NAME: Symbol;
-  SOCKET_REQUEST_COUNT: Symbol;
-  SOCKET_REQUEST_FINISHED_COUNT: Symbol;
+declare class FormData extends stream.Readable {
+  constructor(options?: Options);
+  append(key: string, value: any, options?: FormData.AppendOptions | string): void;
+  getHeaders(userHeaders?: FormData.Headers): FormData.Headers;
+  submit(
+    params: string | FormData.SubmitOptions,
+    callback?: (error: Error | null, response: http.IncomingMessage) => void
+  ): http.ClientRequest;
+  getBuffer(): Buffer;
+  setBoundary(boundary: string): void;
+  getBoundary(): string;
+  getLength(callback: (err: Error | null, length: number) => void): void;
+  getLengthSync(): number;
+  hasKnownLength(): boolean;
 }
 
-declare class AgentKeepAlive extends HttpAgent {}
-
-declare namespace AgentKeepAlive {
-  export interface AgentStatus {
-    createSocketCount: number;
-    createSocketErrorCount: number;
-    closeSocketCount: number;
-    errorSocketCount: number;
-    timeoutSocketCount: number;
-    requestCount: number;
-    freeSockets: PlainObject;
-    sockets: PlainObject;
-    requests: PlainObject;
+declare namespace FormData {
+  interface Headers {
+    [key: string]: any;
   }
 
-  interface CommonHttpOption {
-    keepAlive?: boolean | undefined;
-    freeSocketTimeout?: number | undefined;
-    freeSocketKeepAliveTimeout?: number | undefined;
-    timeout?: number | undefined;
-    socketActiveTTL?: number | undefined;
+  interface AppendOptions {
+    header?: string | Headers;
+    knownLength?: number;
+    filename?: string;
+    filepath?: string;
+    contentType?: string;
   }
 
-  export interface HttpOptions extends http.AgentOptions, CommonHttpOption { }
-  export interface HttpsOptions extends https.AgentOptions, CommonHttpOption { }
-
-  export class HttpsAgent extends https.Agent {
-    constructor(opts?: HttpsOptions);
-    readonly statusChanged: boolean;
-    createConnection(options: net.NetConnectOpts, cb?: Function): net.Socket;
-    createSocket(req: http.IncomingMessage, options: http.RequestOptions, cb: Function): void;
-    getCurrentStatus(): AgentStatus;
+  interface SubmitOptions extends http.RequestOptions {
+    protocol?: 'https:' | 'http:';
   }
-
-  export const constants: Constants;
 }
-
-export = AgentKeepAlive;
