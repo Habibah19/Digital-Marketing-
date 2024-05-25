@@ -1,105 +1,89 @@
 {
-  "name": "openai",
-  "version": "4.39.0",
-  "description": "The official TypeScript library for the OpenAI API",
-  "author": "OpenAI <support@openai.com>",
-  "types": "./index.d.ts",
-  "main": "./index.js",
-  "type": "commonjs",
-  "repository": "github:openai/openai-node",
-  "license": "Apache-2.0",
-  "packageManager": "yarn@1.22.22",
-  "files": [
-    "*"
-  ],
-  "private": false,
-  "scripts": {
-    "test": "./scripts/test",
-    "build": "bash ./build",
-    "format": "prettier --write --cache --cache-strategy metadata . !dist",
-    "tsn": "ts-node -r tsconfig-paths/register",
-    "lint": "eslint --ext ts,js .",
-    "fix": "eslint --fix --ext ts,js ."
-  },
-  "dependencies": {
-    "@types/node": "^18.11.18",
-    "@types/node-fetch": "^2.6.4",
-    "abort-controller": "^3.0.0",
-    "agentkeepalive": "^4.2.1",
-    "form-data-encoder": "1.7.2",
-    "formdata-node": "^4.3.2",
-    "node-fetch": "^2.6.7",
-    "web-streams-polyfill": "^3.2.1"
-  },
-  "sideEffects": [
-    "./_shims/index.js",
-    "./_shims/index.mjs",
-    "./shims/node.js",
-    "./shims/node.mjs",
-    "./shims/web.js",
-    "./shims/web.mjs"
-  ],
-  "imports": {
-    "openai": ".",
-    "openai/*": "./src/*"
-  },
-  "exports": {
-    "./_shims/auto/*": {
-      "deno": {
-        "types": "./_shims/auto/*.d.ts",
-        "require": "./_shims/auto/*.js",
-        "default": "./_shims/auto/*.mjs"
-      },
-      "bun": {
-        "types": "./_shims/auto/*.d.ts",
-        "require": "./_shims/auto/*-bun.js",
-        "default": "./_shims/auto/*-bun.mjs"
-      },
-      "browser": {
-        "types": "./_shims/auto/*.d.ts",
-        "require": "./_shims/auto/*.js",
-        "default": "./_shims/auto/*.mjs"
-      },
-      "worker": {
-        "types": "./_shims/auto/*.d.ts",
-        "require": "./_shims/auto/*.js",
-        "default": "./_shims/auto/*.mjs"
-      },
-      "workerd": {
-        "types": "./_shims/auto/*.d.ts",
-        "require": "./_shims/auto/*.js",
-        "default": "./_shims/auto/*.mjs"
-      },
-      "node": {
-        "types": "./_shims/auto/*-node.d.ts",
-        "require": "./_shims/auto/*-node.js",
-        "default": "./_shims/auto/*-node.mjs"
-      },
-      "types": "./_shims/auto/*.d.ts",
-      "require": "./_shims/auto/*.js",
-      "default": "./_shims/auto/*.mjs"
+    "name": "node-fetch",
+    "version": "2.7.0",
+    "description": "A light-weight module that brings window.fetch to node.js",
+    "main": "lib/index.js",
+    "browser": "./browser.js",
+    "module": "lib/index.mjs",
+    "files": [
+        "lib/index.js",
+        "lib/index.mjs",
+        "lib/index.es.js",
+        "browser.js"
+    ],
+    "engines": {
+        "node": "4.x || >=6.0.0"
     },
-    ".": {
-      "require": {
-        "types": "./index.d.ts",
-        "default": "./index.js"
-      },
-      "types": "./index.d.mts",
-      "default": "./index.mjs"
+    "scripts": {
+        "build": "cross-env BABEL_ENV=rollup rollup -c",
+        "prepare": "npm run build",
+        "test": "cross-env BABEL_ENV=test mocha --require babel-register --throw-deprecation test/test.js",
+        "report": "cross-env BABEL_ENV=coverage nyc --reporter lcov --reporter text mocha -R spec test/test.js",
+        "coverage": "cross-env BABEL_ENV=coverage nyc --reporter json --reporter text mocha -R spec test/test.js && codecov -f coverage/coverage-final.json"
     },
-    "./*.mjs": {
-      "types": "./*.d.ts",
-      "default": "./*.mjs"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bitinn/node-fetch.git"
     },
-    "./*.js": {
-      "types": "./*.d.ts",
-      "default": "./*.js"
+    "keywords": [
+        "fetch",
+        "http",
+        "promise"
+    ],
+    "author": "David Frank",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/bitinn/node-fetch/issues"
     },
-    "./*": {
-      "types": "./*.d.ts",
-      "require": "./*.js",
-      "default": "./*.mjs"
+    "homepage": "https://github.com/bitinn/node-fetch",
+    "dependencies": {
+        "whatwg-url": "^5.0.0"
+    },
+    "peerDependencies": {
+        "encoding": "^0.1.0"
+    },
+    "peerDependenciesMeta": {
+        "encoding": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@ungap/url-search-params": "^0.1.2",
+        "abort-controller": "^1.1.0",
+        "abortcontroller-polyfill": "^1.3.0",
+        "babel-core": "^6.26.3",
+        "babel-plugin-istanbul": "^4.1.6",
+        "babel-plugin-transform-async-generator-functions": "^6.24.1",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "1.4.0",
+        "babel-register": "^6.16.3",
+        "chai": "^3.5.0",
+        "chai-as-promised": "^7.1.1",
+        "chai-iterator": "^1.1.1",
+        "chai-string": "~1.3.0",
+        "codecov": "3.3.0",
+        "cross-env": "^5.2.0",
+        "form-data": "^2.3.3",
+        "is-builtin-module": "^1.0.0",
+        "mocha": "^5.0.0",
+        "nyc": "11.9.0",
+        "parted": "^0.1.1",
+        "promise": "^8.0.3",
+        "resumer": "0.0.0",
+        "rollup": "^0.63.4",
+        "rollup-plugin-babel": "^3.0.7",
+        "string-to-arraybuffer": "^1.0.2",
+        "teeny-request": "3.7.0"
+    },
+    "release": {
+        "branches": [
+            "+([0-9]).x",
+            "main",
+            "next",
+            {
+                "name": "beta",
+                "prerelease": true
+            }
+        ]
     }
-  },
-  "bin": "./bin/cli"
 }
