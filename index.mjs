@@ -1,38 +1,12 @@
-"use strict";
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.fileFromPath = exports.toFile = exports.UnprocessableEntityError = exports.PermissionDeniedError = exports.InternalServerError = exports.AuthenticationError = exports.BadRequestError = exports.RateLimitError = exports.ConflictError = exports.NotFoundError = exports.APIUserAbortError = exports.APIConnectionTimeoutError = exports.APIConnectionError = exports.APIError = exports.OpenAIError = exports.OpenAI = void 0;
-const Core = __importStar(require("./core.js"));
-const Errors = __importStar(require("./error.js"));
-const Uploads = __importStar(require("./uploads.js"));
-const Pagination = __importStar(require("openai/pagination"));
-const API = __importStar(require("openai/resources/index"));
+import * as Core from "./core.mjs";
+import * as Errors from "./error.mjs";
+import * as Uploads from "./uploads.mjs";
+import * as Pagination from 'openai/pagination';
+import * as API from 'openai/resources/index';
 /** API Client for interfacing with the OpenAI API. */
-class OpenAI extends Core.APIClient {
+export class OpenAI extends Core.APIClient {
     /**
      * API Client for interfacing with the OpenAI API.
      *
@@ -100,7 +74,6 @@ class OpenAI extends Core.APIClient {
         return { Authorization: `Bearer ${this.apiKey}` };
     }
 }
-exports.OpenAI = OpenAI;
 _a = OpenAI;
 OpenAI.OpenAI = _a;
 OpenAI.OpenAIError = Errors.OpenAIError;
@@ -118,9 +91,9 @@ OpenAI.PermissionDeniedError = Errors.PermissionDeniedError;
 OpenAI.UnprocessableEntityError = Errors.UnprocessableEntityError;
 OpenAI.toFile = Uploads.toFile;
 OpenAI.fileFromPath = Uploads.fileFromPath;
-exports.OpenAIError = Errors.OpenAIError, exports.APIError = Errors.APIError, exports.APIConnectionError = Errors.APIConnectionError, exports.APIConnectionTimeoutError = Errors.APIConnectionTimeoutError, exports.APIUserAbortError = Errors.APIUserAbortError, exports.NotFoundError = Errors.NotFoundError, exports.ConflictError = Errors.ConflictError, exports.RateLimitError = Errors.RateLimitError, exports.BadRequestError = Errors.BadRequestError, exports.AuthenticationError = Errors.AuthenticationError, exports.InternalServerError = Errors.InternalServerError, exports.PermissionDeniedError = Errors.PermissionDeniedError, exports.UnprocessableEntityError = Errors.UnprocessableEntityError;
-exports.toFile = Uploads.toFile;
-exports.fileFromPath = Uploads.fileFromPath;
+export const { OpenAIError, APIError, APIConnectionError, APIConnectionTimeoutError, APIUserAbortError, NotFoundError, ConflictError, RateLimitError, BadRequestError, AuthenticationError, InternalServerError, PermissionDeniedError, UnprocessableEntityError, } = Errors;
+export var toFile = Uploads.toFile;
+export var fileFromPath = Uploads.fileFromPath;
 (function (OpenAI) {
     OpenAI.Page = Pagination.Page;
     OpenAI.CursorPage = Pagination.CursorPage;
@@ -138,7 +111,6 @@ exports.fileFromPath = Uploads.fileFromPath;
     OpenAI.Beta = API.Beta;
     OpenAI.Batches = API.Batches;
     OpenAI.BatchesPage = API.BatchesPage;
-})(OpenAI = exports.OpenAI || (exports.OpenAI = {}));
-exports = module.exports = OpenAI;
-exports.default = OpenAI;
-//# sourceMappingURL=index.js.map
+})(OpenAI || (OpenAI = {}));
+export default OpenAI;
+//# sourceMappingURL=index.mjs.map
